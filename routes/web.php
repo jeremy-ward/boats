@@ -15,15 +15,19 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/brands', function(){
-	$brands =DB::table('boats')->get();
-	return view('boatList', ['brands'=>$brands]);
-});
-Route::get('/boat/{id}', function($id){
-	$boat = DB::table('boats')->where('id', $id)->get()[0];
-	$type = $boat->type;
-	$name = $boat->brand;
-	$count = DB::table('boat_details')->select('boatCount')->where('boatId', $id)->orderby('created_at', 'desc')->first()->boatCount;
-	return view('boat', ['name'=>$name, 'type'=>$type, 'count' => $count]);
-});
-Route::get('/check/{type}', ['uses' => 'BoatController@getBoatList']);
+Route::get('/brands', 'PageController@boatList');
+
+// Route::get('/boat/{id}', function($id){
+
+// 	$boat = DB::table('boats')->where('id', $id)->get()[0];
+// 	$type = $boat->type;
+// 	$name = $boat->brand;
+// 	$count = DB::table('boat_details')->select('boatCount')->where('boatId', $id)->orderby('created_at', 'desc')->first()->boatCount;
+
+// 	return view('boat', ['name'=>$name, 'type'=>$type, 'count' => $count]);
+// });
+
+Route::get('/boat/{id}', ['uses' => 'PageController@viewBoat']);
+
+Route::get('/check/{type}', ['uses' => 'BoatController@getBoatList']
+);
